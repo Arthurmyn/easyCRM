@@ -39,20 +39,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter()
   const pathname = usePathname()
 
+  const isLoginPage = pathname === '/admin/login'
+
   useEffect(() => {
+    if (isLoginPage) return
     const u = getUser()
     if (!u) {
       router.push('/admin/login')
       return
     }
     setUser(u)
-  }, [router])
+  }, [router, isLoginPage])
 
   const handleLogout = () => {
     clearAuth()
     router.push('/admin/login')
   }
 
+  if (isLoginPage) return <>{children}</>
   if (!user) return null
 
   return (
